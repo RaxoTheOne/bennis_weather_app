@@ -54,7 +54,8 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                 if (weatherData == null) {
                   return Text('No data available');
                 }
-                Map<String, dynamic> currentWeatherData = weatherData['current'];
+                Map<String, dynamic> currentWeatherData =
+                    weatherData['current'];
                 Map<String, dynamic> forecastData = weatherData['forecast'];
 
                 return Column(
@@ -82,14 +83,20 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                       child: ListView.builder(
                         itemCount: forecastData['list'].length,
                         itemBuilder: (BuildContext context, int index) {
-                          Map<String, dynamic> forecast = forecastData['list'][index];
-                          DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(forecast['dt'] * 1000);
-                          String date = DateFormat('dd.MM.yyyy').format(dateTime);
+                          Map<String, dynamic> forecast =
+                              forecastData['list'][index];
+                          DateTime dateTime =
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  forecast['dt'] * 1000);
+                          String date =
+                              DateFormat('dd.MM.yyyy').format(dateTime);
                           String time = DateFormat('HH:mm').format(dateTime);
                           String forecastMain = forecast['weather'][0]['main'];
-                          double forecastTemp = forecast['main']['temp'].toDouble();
+                          double forecastTemp =
+                              forecast['main']['temp'].toDouble();
                           return ListTile(
-                            title: Text('$date $time: $forecastMain, $forecastTemp°C'),
+                            title: Text(
+                                '$date $time: $forecastMain, $forecastTemp°C'),
                           );
                         },
                       ),
