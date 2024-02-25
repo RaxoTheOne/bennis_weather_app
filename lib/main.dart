@@ -13,7 +13,7 @@ class MyWeatherApp extends StatefulWidget {
 
 class _MyWeatherAppState extends State<MyWeatherApp> {
   String _city = 'Berlin'; // Ändere die Stadt hier nach Bedarf
-  String _apiKey = '9f84ed600d60bca794131900e81a7a1b'; // Füge hier deinen API-Schlüssel ein
+  String _apiKey = '4802adcc2b0a6db427173599dbaa9d4e'; // Füge hier deinen API-Schlüssel ein
 
   Future<Map<String, dynamic>> getWeatherData() async {
     String apiUrl =
