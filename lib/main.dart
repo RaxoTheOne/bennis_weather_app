@@ -48,6 +48,12 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
     }
   }
 
+  void _refreshWeatherData() {
+    setState(() {
+      // Hier kannst du zusätzliche Logik hinzufügen, z.B. eine andere Stadt laden
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,82 +61,90 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
         appBar: AppBar(
           title: Text('Wettervorhersage'),
         ),
-        body: Center(
-          child: FutureBuilder(
-            future: getWeatherData(),
-            builder: (BuildContext context,
-                AsyncSnapshot<Map<String, dynamic>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                Map<String, dynamic>? weatherData = snapshot.data;
-                if (weatherData == null) {
-                  return Text('No data available');
-                }
-                Map<String, dynamic> currentWeatherData =
-                    weatherData['current'];
-                Map<String, dynamic> forecastData = weatherData['forecast'];
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("/Users/benjamingayda-knop/Coden/Projects/bennis_weather_app/assests/_fae9a297-346c-4943-8d19-8bb3778e82ca.jpeg"), // Hintergrundbild
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Center(
+            child: FutureBuilder(
+              future: getWeatherData(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  Map<String, dynamic>? weatherData = snapshot.data;
+                  if (weatherData == null) {
+                    return Text('No data available');
+                  }
+                  Map<String, dynamic> currentWeatherData =
+                      weatherData['current'];
+                  List<dynamic> forecastData = weatherData['forecast']['list'];
 
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Aktuelles Wetter in $_city:',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 10),
-                    Icon(
-                      getWeatherIcon(currentWeatherData['weather'][0]['main']),
-                      size: 50,
-                    ),
-                    Text(
-                      '${currentWeatherData['weather'][0]['main']}',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                    Text(
-                      'Temperatur: ${currentWeatherData['main']['temp']}°C',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Vorhersage für die nächsten Tage:',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: forecastData['list'].length,
-                        itemBuilder: (BuildContext context, int index) {
-                          Map<String, dynamic> forecast =
-                              forecastData['list'][index];
-                          DateTime dateTime =
-                              DateTime.fromMillisecondsSinceEpoch(
-                                  forecast['dt'] * 1000);
-                          String date =
-                              DateFormat('dd.MM.yyyy').format(dateTime);
-                          String time = DateFormat('HH:mm').format(dateTime);
-                          String forecastMain = forecast['weather'][0]['main'];
-                          double forecastTemp =
-                              forecast['main']['temp'].toDouble();
-                          return Card(
-                            child: ListTile(
-                              leading: Icon(getWeatherIcon(forecastMain)),
-                              title: Text(
-                                '$date $time',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                  '$forecastMain, $forecastTemp°C'),
-                            ),
-                          );
-                        },
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Aktuelles Wetter in $_city:',
+                        style: TextStyle(fontSize: 20),
                       ),
-                    ),
-                  ],
-                );
-              }
-            },
+                      SizedBox(height: 10),
+                      Icon(
+                        getWeatherIcon(currentWeatherData['weather'][0]['main']),
+                        size: 50,
+                      ),
+                      Text(
+                        '${currentWeatherData['weather'][0]['main']}',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                      Text(
+                        'Temperatur: ${currentWeatherData['main']['temp']}°C',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Vorhersage für die nächsten Tage:',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: forecastData.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            Map<String, dynamic> forecast = forecastData[index];
+                            DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
+                                forecast['dt'] * 1000);
+                            String date = DateFormat('dd.MM.yyyy').format(dateTime);
+                            String time = DateFormat('HH:mm').format(dateTime);
+                            String forecastMain = forecast['weather'][0]['main'];
+                            double forecastTemp = forecast['main']['temp'].toDouble();
+                            return Card(
+                              child: ListTile(
+                                leading: Icon(getWeatherIcon(forecastMain)),
+                                title: Text(
+                                  '$date $time',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                    '$forecastMain, $forecastTemp°C'),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: _refreshWeatherData,
+                        child: Text('Aktualisieren'),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),
