@@ -33,6 +33,21 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
     return {'current': currentWeatherData, 'forecast': forecastData};
   }
 
+  IconData getWeatherIcon(String weatherMain) {
+    switch (weatherMain) {
+      case 'Clear':
+        return Icons.wb_sunny;
+      case 'Clouds':
+        return Icons.cloud;
+      case 'Rain':
+        return Icons.beach_access; // Du kannst das Symbol nach Bedarf ändern
+      case 'Snow':
+        return Icons.ac_unit;
+      default:
+        return Icons.wb_sunny;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,6 +81,10 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                       style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(height: 10),
+                    Icon(
+                      getWeatherIcon(currentWeatherData['weather'][0]['main']),
+                      size: 50,
+                    ),
                     Text(
                       '${currentWeatherData['weather'][0]['main']}',
                       style: TextStyle(fontSize: 30),
@@ -94,9 +113,16 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                           String forecastMain = forecast['weather'][0]['main'];
                           double forecastTemp =
                               forecast['main']['temp'].toDouble();
-                          return ListTile(
-                            title: Text(
-                                '$date $time: $forecastMain, $forecastTemp°C'),
+                          return Card(
+                            child: ListTile(
+                              leading: Icon(getWeatherIcon(forecastMain)),
+                              title: Text(
+                                '$date $time',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                  '$forecastMain, $forecastTemp°C'),
+                            ),
                           );
                         },
                       ),
