@@ -64,7 +64,8 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("/Users/benjamingayda-knop/Coden/Projects/bennis_weather_app/assests/_fae9a297-346c-4943-8d19-8bb3778e82ca.jpeg"), // Hintergrundbild
+              image: AssetImage(
+                  "/Users/benjamingayda-knop/Coden/Projects/bennis_weather_app/assests/_fae9a297-346c-4943-8d19-8bb3778e82ca.jpeg"), // Hintergrundbild
               fit: BoxFit.cover,
             ),
           ),
@@ -95,7 +96,8 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                       ),
                       SizedBox(height: 10),
                       Icon(
-                        getWeatherIcon(currentWeatherData['weather'][0]['main']),
+                        getWeatherIcon(
+                            currentWeatherData['weather'][0]['main']),
                         size: 50,
                       ),
                       Text(
@@ -116,12 +118,16 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                           itemCount: forecastData.length,
                           itemBuilder: (BuildContext context, int index) {
                             Map<String, dynamic> forecast = forecastData[index];
-                            DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
-                                forecast['dt'] * 1000);
-                            String date = DateFormat('dd.MM.yyyy').format(dateTime);
+                            DateTime dateTime =
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    forecast['dt'] * 1000);
+                            String date =
+                                DateFormat('dd.MM.yyyy').format(dateTime);
                             String time = DateFormat('HH:mm').format(dateTime);
-                            String forecastMain = forecast['weather'][0]['main'];
-                            double forecastTemp = forecast['main']['temp'].toDouble();
+                            String forecastMain =
+                                forecast['weather'][0]['main'];
+                            double forecastTemp =
+                                forecast['main']['temp'].toDouble();
                             return Card(
                               child: ListTile(
                                 leading: Icon(getWeatherIcon(forecastMain)),
@@ -129,8 +135,8 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                                   '$date $time',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                subtitle: Text(
-                                    '$forecastMain, $forecastTemp°C'),
+                                subtitle:
+                                    Text('$forecastMain, $forecastTemp°C'),
                               ),
                             );
                           },
