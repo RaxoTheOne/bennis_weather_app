@@ -1,11 +1,9 @@
+// presentation/weather_screen.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
-void main() {
-  runApp(MyWeatherApp());
-}
+import 'package:bennis_weather_app/domain/weather_logic.dart';
 
 class MyWeatherApp extends StatefulWidget {
   @override
@@ -13,9 +11,8 @@ class MyWeatherApp extends StatefulWidget {
 }
 
 class _MyWeatherAppState extends State<MyWeatherApp> {
-  String _city = 'Berlin'; // Ändere die Stadt hier nach Bedarf
-  String _apiKey =
-      '4802adcc2b0a6db427173599dbaa9d4e'; // Füge hier deinen API-Schlüssel ein
+  String _city = 'Berlin'; 
+  String _apiKey = '4802adcc2b0a6db427173599dbaa9d4e'; 
 
   Future<Map<String, dynamic>> getWeatherData() async {
     String currentWeatherUrl =
@@ -31,21 +28,6 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
     Map<String, dynamic> forecastData = json.decode(forecastResponse.body);
 
     return {'current': currentWeatherData, 'forecast': forecastData};
-  }
-
-  IconData getWeatherIcon(String weatherMain) {
-    switch (weatherMain) {
-      case 'Clear':
-        return Icons.wb_sunny;
-      case 'Clouds':
-        return Icons.cloud;
-      case 'Rain':
-        return Icons.beach_access; // Du kannst das Symbol nach Bedarf ändern
-      case 'Snow':
-        return Icons.ac_unit;
-      default:
-        return Icons.wb_sunny;
-    }
   }
 
   void _refreshWeatherData() {
@@ -65,7 +47,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                  "/Users/benjamingayda-knop/Coden/Projects/bennis_weather_app/assests/_fae9a297-346c-4943-8d19-8bb3778e82ca.jpeg"), // Hintergrundbild
+                  "/Users/benjamingayda-knop/Coden/Projects/bennis_weather_app/assests/_fae9a297-346c-4943-8d19-8bb3778e82ca.jpeg"), 
               fit: BoxFit.cover,
             ),
           ),
@@ -96,7 +78,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                       ),
                       SizedBox(height: 10),
                       Icon(
-                        getWeatherIcon(
+                        WeatherLogic.getWeatherIcon(
                             currentWeatherData['weather'][0]['main']),
                         size: 50,
                       ),
@@ -130,7 +112,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                                 forecast['main']['temp'].toDouble();
                             return Card(
                               child: ListTile(
-                                leading: Icon(getWeatherIcon(forecastMain)),
+                                leading: Icon(WeatherLogic.getWeatherIcon(forecastMain)),
                                 title: Text(
                                   '$date $time',
                                   style: TextStyle(fontWeight: FontWeight.bold),
