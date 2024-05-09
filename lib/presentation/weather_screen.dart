@@ -11,8 +11,8 @@ class MyWeatherApp extends StatefulWidget {
 }
 
 class _MyWeatherAppState extends State<MyWeatherApp> {
-  String _city = 'Berlin'; 
-  String _apiKey = '4802adcc2b0a6db427173599dbaa9d4e'; 
+  String _city = 'Berlin';
+  String _apiKey = '4802adcc2b0a6db427173599dbaa9d4e';
 
   Future<Map<String, dynamic>> getWeatherData() async {
     String currentWeatherUrl =
@@ -48,7 +48,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                  "/Users/benjamingayda-knop/Coden/Projects/bennis_weather_app/assests/_fae9a297-346c-4943-8d19-8bb3778e82ca.jpeg"), 
+                  "/Users/benjamingayda-knop/Coden/Projects/bennis_weather_app/assests/_fae9a297-346c-4943-8d19-8bb3778e82ca.jpeg"),
               fit: BoxFit.cover,
             ),
           ),
@@ -113,7 +113,8 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                                 forecast['main']['temp'].toDouble();
                             return Card(
                               child: ListTile(
-                                leading: Icon(WeatherLogic.getWeatherIcon(forecastMain)),
+                                leading: Icon(
+                                    WeatherLogic.getWeatherIcon(forecastMain)),
                                 title: Text(
                                   '$date $time',
                                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -128,6 +129,9 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                       ElevatedButton(
                         onPressed: _refreshWeatherData,
                         child: Text('Aktualisieren'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
                       ),
                     ],
                   );
